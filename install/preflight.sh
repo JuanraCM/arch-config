@@ -7,4 +7,4 @@ EOF
 sudo chmod 440 /etc/sudoers.d/install-mode
 
 # Setup pacman config
-sudo cp "$CONFIG_DEFAULTS/pacman.conf" /etc/pacman.conf
+sudo cp "$CONFIG_DEFAULT/pacman.conf" /etc/pacman.conf
