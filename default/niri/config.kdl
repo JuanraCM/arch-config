@@ -1,0 +1,97 @@
+// https://yalter.github.io/niri/Configuration:-Introduction
+
+// Input device configuration.
+// https://yalter.github.io/niri/Configuration:-Input
+input {
+  keyboard {
+    numlock
+  }
+
+  touchpad {
+    tap
+    natural-scroll
+  }
+
+  mouse {
+    accel-speed -0.2
+    accel-profile "flat"
+  }
+
+  warp-mouse-to-focus
+  focus-follows-mouse
+}
+
+// Layout configuration.
+// https://yalter.github.io/niri/Configuration:-Layout
+layout {
+  gaps 8
+  center-focused-column "never"
+  default-column-width { proportion 0.5; }
+
+  focus-ring {
+    off
+  }
+
+  border {
+    width 2
+    active-color "#7fc8ff"
+    inactive-color "#505050"
+    urgent-color "#9b0000"
+  }
+}
+
+prefer-no-csd
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+// Animations configuration.
+// https://yalter.github.io/niri/Configuration:-Animations
+animations {
+  slowdown 0.8
+}
+
+// Window rules configuration.
+// https://yalter.github.io/niri/Configuration:-Window-Rules
+window-rule {
+  geometry-corner-radius 4
+  clip-to-geometry true
+}
+
+// Key bindings configuration.
+// https://yalter.github.io/niri/Configuration:-Key-Bindings
+binds {
+  Mod+Return hotkey-overlay-title="Open a Terminal" { spawn "wezterm"; }
+  Mod+B hotkey-overlay-title="Open a Browser" { spawn "chromium"; }
+
+  Mod+Space hotkey-overlay-title="Application Launcher" { 
+    spawn "dms" "ipc" "call" "spotlight" "toggle"; 
+  }
+
+  Mod+Alt+L hotkey-overlay-title="Lock Screen" { 
+    spawn "dms" "ipc" "call" "lock" "lock"; 
+  }
+
+  Mod+O repeat=false { toggle-overview; }
+  Mod+W repeat=false { close-window; }
+
+  Mod+H     { focus-column-left; }
+  Mod+J     { focus-window-down; }
+  Mod+K     { focus-window-up; }
+  Mod+L     { focus-column-right; }
+
+  Mod+Ctrl+H     { move-column-left; }
+  Mod+Ctrl+J     { move-window-down; }
+  Mod+Ctrl+K     { move-window-up; }
+  Mod+Ctrl+L     { move-column-right; }
+
+  Mod+F { maximize-column; }
+  Mod+Shift+F { fullscreen-window; }
+
+  Mod+Minus { set-column-width "-10%"; }
+  Mod+Plus  { set-column-width "+10%"; }
+
+  Print { screenshot; }
+  Ctrl+Print { screenshot-screen; }
+  Alt+Print { screenshot-window; }
+}
+
+include "user.kdl"
