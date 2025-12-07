@@ -94,4 +94,9 @@ binds {
   Alt+Print { screenshot-window; }
 }
 
+// Disable hotkey overlay at startup
+hotkey-overlay {
+    skip-at-startup
+}
+
 include "user.kdl"
