@@ -11,5 +11,6 @@ export CONFIG_DEFAULT="$CONFIG_PATH/default"
 # Install
 source "$CONFIG_INSTALL/preflight.sh"
 source "$CONFIG_INSTALL/packaging.sh"
+source "$CONFIG_INSTALL/config.sh"
 source "$CONFIG_INSTALL/desktop.sh"
 source "$CONFIG_INSTALL/postflight.sh"

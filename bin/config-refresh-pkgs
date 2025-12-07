@@ -1,0 +1,6 @@
+#!/bin/bash
+
+PACKAGES_PATH="$CONFIG_PATH/install/pacman.packages"
+
+mapfile -t packages < <(grep -v '^#' $PACKAGES_PATH | grep -v '^$')
+sudo pacman -S --noconfirm --needed "${packages[@]}"
