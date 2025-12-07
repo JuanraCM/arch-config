@@ -1,4 +1,6 @@
 binutils
+bluez
+bluez-utils
 chromium
 clang
 docker-buildx
@@ -16,6 +18,9 @@ luarocks
 mesa
 mise
 nvim
+openssh
+pipewire
+ripgrep
 ruby
 sddm
 stow
