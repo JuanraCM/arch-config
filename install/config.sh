@@ -6,7 +6,7 @@ sudo cp -r $CONFIG_DEFAULT/profile.d/* /etc/profile.d/
 sudo mkdir -p /etc/sddm.conf.d
 
 if [ ! -f /etc/sddm.conf.d/autologin.conf ]; then
-  cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf
+  sudo tee /etc/sddm.conf.d/autologin.conf <<EOF >/dev/null
 [Autologin]
 User=$USER
 Session=niri
@@ -25,12 +25,18 @@ sudo systemctl enable bluetooth.service
 chsh -s /bin/zsh
 
 # Setup limine
-if [[ -f /boot/EFI/BOOT/limine.conf ]]; then
-  ## USB location
-  limine_config="/boot/EFI/BOOT/limine.conf"
+[[ -f /boot/EFI/limine/limine.conf ]] || [[ -f /boot/EFI/BOOT/limine.conf ]] && EFI=true
+
+# Conf location is different between EFI and BIOS
+if [[ -n "$EFI" ]]; then
+  # Check USB location first, then regular EFI location
+  if [[ -f /boot/EFI/BOOT/limine.conf ]]; then
+    limine_config="/boot/EFI/BOOT/limine.conf"
+  else
+    limine_config="/boot/EFI/limine/limine.conf"
+  fi
 else
-  ## Default location
-  limine_config="/boot/EFI/limine/limine.conf"
+  limine_config="/boot/limine/limine.conf"
 fi
 
 if [[ ! -f $limine_config ]]; then
