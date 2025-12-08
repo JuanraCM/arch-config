@@ -1,6 +1,6 @@
 # Copy environment.d files
 sudo mkdir -p /etc/profile.d/
-sudo cp -r $DEFAULT_PATH/profile.d/* /etc/profile.d/
+sudo cp -r $CONFIG_DEFAULT/profile.d/* /etc/profile.d/
 
 # Setup sddm
 sudo mkdir -p /etc/sddm.conf.d
@@ -58,7 +58,7 @@ BOOT_ORDER="*, *fallback, Snapshots"
 ENABLE_SORT=no
 EOF
 
-sudo cp $DEFAULT_PATH/limine/limine.conf /boot/limine.conf
+sudo cp $CONFIG_DEFAULT/limine/limine.conf /boot/limine.conf
 sudo rm "$limine_config"
 
 sudo limine-update

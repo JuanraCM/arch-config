@@ -5,4 +5,4 @@ systemctl --user add-wants niri.service dms
 
 # Copy Niri config files
 mkdir -p $HOME/.config/niri
-cp -r $DEFAULT_PATH/niri/* $HOME/.config/niri/
+sudo cp -r $CONFIG_DEFAULT/niri/* $HOME/.config/niri/
