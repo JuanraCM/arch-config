@@ -7,7 +7,7 @@ sudo pacman -S --needed --noconfirm base-devel
 # Install paru
 git clone https://aur.archlinux.org/paru-bin.git
 cd paru-bin
-makepkg -si
+makepkg -si --noconfirm
 cd ..
 rm -rf paru-bin
 
