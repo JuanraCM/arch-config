@@ -4,17 +4,7 @@ sudo cp -r $CONFIG_DEFAULT/profile.d/* /etc/profile.d/
 
 # Setup sddm
 sudo mkdir -p /etc/sddm.conf.d
-
-if [ ! -f /etc/sddm.conf.d/autologin.conf ]; then
-  sudo tee /etc/sddm.conf.d/autologin.conf <<EOF >/dev/null
-[Autologin]
-User=$USER
-Session=niri
-
-[Theme]
-Current=breeze
-EOF
-fi
+sudo cp $CONFIG_DEFAULT/sddm/login.conf /etc/sddm.conf.d/login.conf
 
 sudo systemctl enable sddm.service
 
