@@ -6,7 +6,6 @@ clang
 docker-buildx
 docker-compose
 fzf
-gum
 jq
 lazydocker
 lib32-mesa
