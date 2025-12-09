@@ -7,10 +7,19 @@ set -eEo pipefail
 export CONFIG_PATH="$HOME/.local/share/arch-config"
 export CONFIG_INSTALL="$CONFIG_PATH/install"
 export CONFIG_DEFAULT="$CONFIG_PATH/default"
+export CONFIG_INSTALL_LOG_FILE="/var/log/arch-config-install.log"
 
 # Install
-source "$CONFIG_INSTALL/preflight.sh"
-source "$CONFIG_INSTALL/packaging.sh"
-source "$CONFIG_INSTALL/config.sh"
-source "$CONFIG_INSTALL/desktop.sh"
-source "$CONFIG_INSTALL/postflight.sh"
+source "$CONFIG_INSTALL/helpers/all.sh"
+
+show_header "Installing JuanraCM Config"
+start_install_log
+
+run_logged "$CONFIG_INSTALL/preflight.sh"
+run_logged "$CONFIG_INSTALL/packaging.sh"
+run_logged "$CONFIG_INSTALL/config.sh"
+run_logged "$CONFIG_INSTALL/desktop.sh"
+run_logged "$CONFIG_INSTALL/postflight.sh"
+
+stop_install_log
+show_header "Installation Complete! Reboot when ready."
