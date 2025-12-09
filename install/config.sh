@@ -24,6 +24,14 @@ sudo systemctl enable bluetooth.service
 # Set default shell
 chsh -s /bin/zsh
 
+# Setup mkinitcpio hooks
+sudo tee /etc/mkinitcpio.conf.d/custom_hooks.conf <<EOF >/dev/null
+HOOKS=(base udev plymouth autodetect microcode modconf kms keyboard keymap consolefont block filesystems fsck)
+EOF
+
+# Set plymouth theme
+sudo plymouth-set-default-theme -R monoarch
+
 # Setup limine
 [[ -f /boot/EFI/limine/limine.conf ]] || [[ -f /boot/EFI/BOOT/limine.conf ]] && EFI=true
 
