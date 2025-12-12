@@ -59,7 +59,7 @@ window-rule {
 // Key bindings configuration.
 // https://yalter.github.io/niri/Configuration:-Key-Bindings
 binds {
-  Mod+Return hotkey-overlay-title="Open a Terminal" { spawn "wezterm"; }
+  Mod+Return hotkey-overlay-title="Open a Terminal" { spawn "xdg-terminal-exec"; }
   Mod+B hotkey-overlay-title="Open a Browser" { spawn "chromium"; }
 
   Mod+Space hotkey-overlay-title="Application Launcher" { 

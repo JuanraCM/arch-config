@@ -5,6 +5,9 @@ sudo cp -r $CONFIG_DEFAULT/profile.d/* /etc/profile.d/
 # Setup bluetooth
 sudo systemctl enable bluetooth.service
 
+# Setup xdg-terminal-exec config
+sudo cp $CONFIG_DEFAULT/xdg-terminal-exec/xdg-terminals.list $HOME/.config/xdg-terminals.list
+
 # Set default shell
 chsh -s /bin/zsh
 
