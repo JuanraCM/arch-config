@@ -10,6 +10,7 @@ sudo cp -r $CONFIG_DEFAULT/polkit/* /etc/polkit-1/rules.d/
 sudo systemctl enable bluetooth.service
 
 # Setup xdg-terminal-exec config
+sudo mkdir -p $HOME/.config/
 sudo cp $CONFIG_DEFAULT/xdg-terminal-exec/xdg-terminals.list $HOME/.config/xdg-terminals.list
 
 # Set default shell
