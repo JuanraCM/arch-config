@@ -2,12 +2,6 @@
 sudo mkdir -p /etc/profile.d/
 sudo cp -r $CONFIG_DEFAULT/profile.d/* /etc/profile.d/
 
-# Setup sddm
-sudo mkdir -p /etc/sddm.conf.d
-sudo cp $CONFIG_DEFAULT/sddm/login.conf /etc/sddm.conf.d/login.conf
-
-sudo systemctl enable sddm.service
-
 # Setup bluetooth
 sudo systemctl enable bluetooth.service
 

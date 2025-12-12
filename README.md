@@ -9,8 +9,7 @@ Heavily inspired by [Omarchy](https://omarchy.app/).
 ### Desktop Environment
 
 - **Niri** - Scrollable tiling Wayland compositor
-- **DankMaterialShell** - Status bar and launcher based on Quickshell
-- **SDDM** with **SilentSDDM** theme - Display manager with custom minimal theme
+- **DankMaterialShell** - Status bar, launcher and greeter based on Quickshell
 - **Plymouth** with **monoarch** theme - Custom boot animation
 
 ### Terminal and Shell
