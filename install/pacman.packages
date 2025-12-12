@@ -16,6 +16,7 @@ lua51
 luarocks
 mesa
 mise
+ntfs-3g
 nvim
 obsidian
 openssh

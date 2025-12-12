@@ -2,6 +2,10 @@
 sudo mkdir -p /etc/profile.d/
 sudo cp -r $CONFIG_DEFAULT/profile.d/* /etc/profile.d/
 
+# Copy polkit files
+sudo mkdir -p /etc/polkit-1/rules.d/
+sudo cp -r $CONFIG_DEFAULT/polkit/* /etc/polkit-1/rules.d/
+
 # Setup bluetooth
 sudo systemctl enable bluetooth.service
 
