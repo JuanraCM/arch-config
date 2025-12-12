@@ -27,6 +27,7 @@ Heavily inspired by [Omarchy](https://omarchy.app/).
 - **Obsidian** - Note-taking and knowledge base
 - **Vesktop** - Unofficial Discord client
 - **Spotify** - Music streaming service
+- **VLC** - Media player
 
 ### Development Tools
 
