@@ -31,7 +31,7 @@ if [[ -n "$EFI" ]]; then
     limine_config="/boot/EFI/limine/limine.conf"
   fi
 else
-  limine_config="/boot/limine/limine.conf"
+  limine_config="/boot/limine.conf"
 fi
 
 if [[ ! -f $limine_config ]]; then
