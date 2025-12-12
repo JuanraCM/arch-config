@@ -26,6 +26,7 @@ Heavily inspired by [Omarchy](https://omarchy.app/).
 - **Chromium** - Web browser
 - **Obsidian** - Note-taking and knowledge base
 - **Vesktop** - Unofficial Discord client
+- **Spotify** - Music streaming service
 
 ### Development Tools
 
