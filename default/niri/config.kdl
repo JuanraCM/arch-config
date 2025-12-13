@@ -1,5 +1,11 @@
 // https://yalter.github.io/niri/Configuration:-Introduction
 
+// Miscellaneous configuration.
+// https://yalter.github.io/niri/Configuration:-Miscellaneous
+spawn-sh-at-startup "wl-paste --watch cliphist store"
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+prefer-no-csd
+
 // Input device configuration.
 // https://yalter.github.io/niri/Configuration:-Input
 input {
@@ -39,9 +45,6 @@ layout {
     urgent-color "#9b0000"
   }
 }
-
-prefer-no-csd
-screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 // Animations configuration.
 // https://yalter.github.io/niri/Configuration:-Animations
