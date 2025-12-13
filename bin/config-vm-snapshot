@@ -1,0 +1,97 @@
+#!/bin/bash
+
+echo -e "\e[32mCreate a snapshot for a QEMU virtual machine.\n\e[0m"
+
+# Get VM directory base
+VM_BASE="$HOME/VM"
+
+# Check if VM directory exists
+if [[ ! -d "$VM_BASE" ]]; then
+  echo "Error: VM directory not found at $VM_BASE"
+  exit 1
+fi
+
+# List available VMs
+VM_DIRS=($(find "$VM_BASE" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;))
+
+if [[ ${#VM_DIRS[@]} -eq 0 ]]; then
+  echo "Error: No VMs found in $VM_BASE"
+  exit 1
+fi
+
+# Let user choose a VM
+VM_NAME=$(printf '%s\n' "${VM_DIRS[@]}" | gum choose --header "Select a VM:")
+if [[ -z "$VM_NAME" ]]; then
+  echo "Error: No VM selected."
+  exit 1
+fi
+
+VM_DIR="$VM_BASE/$VM_NAME"
+
+# Find disk images in VM directory
+DISK_FILES=($(find "$VM_DIR" -maxdepth 1 -type f \( -name "*.qcow2" -o -name "*.raw" -o -name "*.vdi" -o -name "*.vmdk" \) -exec basename {} \;))
+
+if [[ ${#DISK_FILES[@]} -eq 0 ]]; then
+  echo "Error: No disk images found in $VM_DIR"
+  exit 1
+fi
+
+# Let user choose a disk (if multiple exist)
+if [[ ${#DISK_FILES[@]} -eq 1 ]]; then
+  DISK_FILE="${DISK_FILES[0]}"
+else
+  DISK_FILE=$(printf '%s\n' "${DISK_FILES[@]}" | gum choose --header "Select a disk:")
+  if [[ -z "$DISK_FILE" ]]; then
+    echo "Error: No disk selected."
+    exit 1
+  fi
+fi
+
+DISK_PATH="$VM_DIR/$DISK_FILE"
+
+# Check if disk format is qcow2 (required for snapshots)
+DISK_FORMAT=$(qemu-img info "$DISK_PATH" | grep "file format:" | awk '{print $3}')
+if [[ "$DISK_FORMAT" != "qcow2" ]]; then
+  echo "Error: Snapshots are only supported for qcow2 format disks."
+  echo "Current disk format: $DISK_FORMAT"
+  exit 1
+fi
+
+# Get snapshot name
+SNAPSHOT_NAME=$(gum input --prompt "Snapshot name> " --placeholder "snapshot-$(date +%Y%m%d-%H%M%S)")
+if [[ -z "$SNAPSHOT_NAME" ]]; then
+  echo "Error: Snapshot name is required."
+  exit 1
+fi
+
+# Optional snapshot description
+SNAPSHOT_DESC=$(gum input --prompt "Description (optional)> " --placeholder "Snapshot description")
+
+# Create snapshot
+echo -e "\nCreating snapshot '$SNAPSHOT_NAME' for $DISK_FILE..."
+
+if [[ -n "$SNAPSHOT_DESC" ]]; then
+  qemu-img snapshot -c "$SNAPSHOT_NAME" -d "$SNAPSHOT_DESC" "$DISK_PATH"
+else
+  qemu-img snapshot -c "$SNAPSHOT_NAME" "$DISK_PATH"
+fi
+
+if [[ $? -eq 0 ]]; then
+  echo -e "\n\e[32mSnapshot '$SNAPSHOT_NAME' created successfully!\e[0m"
+  echo ""
+  echo "VM: $VM_NAME"
+  echo "Disk: $DISK_FILE"
+  echo "Snapshot: $SNAPSHOT_NAME"
+  echo ""
+  echo "To list all snapshots:"
+  echo "  qemu-img snapshot -l $DISK_PATH"
+  echo ""
+  echo "To apply this snapshot:"
+  echo "  qemu-img snapshot -a $SNAPSHOT_NAME $DISK_PATH"
+  echo ""
+  echo "To delete this snapshot:"
+  echo "  qemu-img snapshot -d $SNAPSHOT_NAME $DISK_PATH"
+else
+  echo "Error: Failed to create snapshot."
+  exit 1
+fi

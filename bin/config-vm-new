@@ -1,0 +1,147 @@
+#!/bin/bash
+
+append_to_qemu_command() {
+  QEMU_CMD="$QEMU_CMD\n  $1 \\ "
+}
+
+echo -e "\e[32mLet's create a new QEMU virtual machine.\n\e[0m"
+
+# Get VM name
+VM_NAME=$(gum input --prompt "VM Name> " --placeholder "my-vm")
+if [[ -z "$VM_NAME" ]]; then
+  echo "Error: VM name is required."
+  exit 1
+fi
+
+# Get VM directory
+VM_DIR="$HOME/VM/$VM_NAME"
+if [[ -d "$VM_DIR" ]]; then
+  echo "Error: VM directory already exists at $VM_DIR"
+  exit 1
+fi
+
+# Get memory size
+MEMORY=$(gum input --prompt "Memory (MB)> " --placeholder "4096" --value "4096")
+if [[ -z "$MEMORY" ]]; then
+  echo "Error: Memory size is required."
+  exit 1
+fi
+
+# Get CPU cores
+CPUS=$(gum input --prompt "CPU Cores> " --placeholder "8" --value "8")
+if [[ -z "$CPUS" ]]; then
+  echo "Error: CPU cores is required."
+  exit 1
+fi
+
+# Get disk size
+DISK_SIZE=$(gum input --prompt "Disk Size (GB)> " --placeholder "20" --value "20")
+if [[ -z "$DISK_SIZE" ]]; then
+  echo "Error: Disk size is required."
+  exit 1
+fi
+
+# Choose disk format
+DISK_FORMAT=$(gum choose --header "Disk Format:" "qcow2" "raw" "vdi" "vmdk")
+if [[ -z "$DISK_FORMAT" ]]; then
+  echo "Error: Disk format is required."
+  exit 1
+fi
+
+# Ask for ISO path (mandatory)
+ISO_PATH=$(fzf --prompt="ISO file: " --height=40% --reverse)
+if [[ -z "$ISO_PATH" ]]; then
+  echo "Error: ISO path is required."
+  exit 1
+fi
+if [[ ! -f "$ISO_PATH" ]]; then
+  echo "Error: ISO file not found at $ISO_PATH"
+  exit 1
+fi
+
+# Choose boot device
+BOOT_DEVICE=$(gum choose --header "Boot Device:" "cdrom" "disk")
+
+# Fixed settings
+GRAPHICS="virtio"
+
+# Create VM directory
+echo -e "\nCreating VM directory at $VM_DIR..."
+mkdir -p "$VM_DIR"
+
+# Create disk image
+echo "Creating disk image..."
+qemu-img create -f "$DISK_FORMAT" "$VM_DIR/disk.$DISK_FORMAT" "${DISK_SIZE}G"
+if [[ $? -ne 0 ]]; then
+  echo "Error: Failed to create disk image."
+  rm -rf "$VM_DIR"
+  exit 1
+fi
+
+# Build QEMU command
+QEMU_CMD="qemu-system-x86_64"
+
+append_to_qemu_command "-name '$VM_NAME'"
+append_to_qemu_command "-m $MEMORY"
+append_to_qemu_command "-smp $CPUS"
+append_to_qemu_command "-drive file=$VM_DIR/disk.$DISK_FORMAT,format=$DISK_FORMAT,if=virtio"
+
+# Add KVM acceleration (always enabled)
+append_to_qemu_command "-enable-kvm"
+append_to_qemu_command "-cpu host"
+
+# Add UEFI support (always enabled)
+if [[ -f /usr/share/edk2-ovmf/x64/OVMF.4m.fd ]]; then
+  cp /usr/share/edk2-ovmf/x64/OVMF.4m.fd "$VM_DIR/OVMF.fd"
+  append_to_qemu_command "-drive if=pflash,format=raw,file=$VM_DIR/OVMF.fd"
+else
+  echo "Error: OVMF firmware not found."
+  exit 1
+fi
+
+# Add ISO
+append_to_qemu_command "-cdrom '$ISO_PATH'"
+if [[ "$BOOT_DEVICE" == "cdrom" ]]; then
+  append_to_qemu_command "-boot d"
+fi
+
+# Add graphics (virtio)
+append_to_qemu_command "-vga $GRAPHICS"
+append_to_qemu_command "-display sdl,gl=on"
+
+# Add network
+append_to_qemu_command "-net nic,model=virtio"
+append_to_qemu_command "-net user"
+
+# Add shared folder (host home directory)
+append_to_qemu_command "-virtfs local,path=$HOME,mount_tag=host_home,security_model=mapped-xattr,id=host_home"
+
+# Save start script
+START_SCRIPT="$VM_DIR/start.sh"
+cat >"$START_SCRIPT" <<EOF
+#!/bin/bash
+# VM: $VM_NAME
+# Created: $(date)
+
+$(echo -e "$QEMU_CMD")
+EOF
+
+chmod +x "$START_SCRIPT"
+
+echo -e "\n\e[32mVM '$VM_NAME' created successfully!\e[0m"
+echo "VM directory: $VM_DIR"
+echo "Start the VM with: $START_SCRIPT"
+echo ""
+echo "Shared folder is configured:"
+echo "  Host path: $HOME"
+echo "  Mount tag: host_home"
+echo ""
+echo "To mount the shared folder inside the VM, run:"
+echo "  sudo mkdir -p /mnt/host_home"
+echo "  sudo mount -t 9p -o trans=virtio host_home /mnt/host_home"
+echo ""
+echo "To auto-mount on boot, add this to /etc/fstab in the guest:"
+echo "  host_home  /mnt/host_home  9p  trans=virtio,version=9p2000.L,rw  0  0"
+echo ""
+echo "To start the VM now, run:"
+echo "  $START_SCRIPT"
