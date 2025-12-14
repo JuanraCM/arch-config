@@ -5,5 +5,5 @@ PACKAGES_PATH="$CONFIG_PATH/install"
 mapfile -t packages < <(grep -v '^#' "$PACKAGES_PATH/pacman.packages" | grep -v '^$')
 sudo pacman -S --noconfirm --needed "${packages[@]}"
 
-mapfile -t packages < <(grep -v '^#' "$PACKAGES_PATH/paru.packages" | grep -v '^$')
-paru -S --noconfirm --needed "${packages[@]}"
+mapfile -t packages < <(grep -v '^#' "$PACKAGES_PATH/aur.packages" | grep -v '^$')
+yay -S --noconfirm --needed "${packages[@]}"
