@@ -62,9 +62,6 @@ fi
 # Choose boot device
 BOOT_DEVICE=$(gum choose --header "Boot Device:" "cdrom" "disk")
 
-# Fixed settings
-GRAPHICS="virtio"
-
 # Create VM directory
 echo -e "\nCreating VM directory at $VM_DIR..."
 mkdir -p "$VM_DIR"
@@ -106,8 +103,8 @@ if [[ "$BOOT_DEVICE" == "cdrom" ]]; then
 fi
 
 # Add graphics (virtio)
-append_to_qemu_command "-vga $GRAPHICS"
-append_to_qemu_command "-display sdl,gl=on"
+append_to_qemu_command "-device virtio-vga-gl"
+append_to_qemu_command "-display gtk,gl=on,grab-on-hover=on"
 
 # Add network
 append_to_qemu_command "-net nic,model=virtio"
