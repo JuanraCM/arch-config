@@ -5,6 +5,7 @@ chromium
 clang
 docker-buildx
 docker-compose
+easyeffects
 fzf
 jq
 lazydocker
@@ -20,6 +21,7 @@ ntfs-3g
 nvim
 obsidian
 openssh
+pavucontrol
 pipewire
 plymouth
 qemu-desktop
