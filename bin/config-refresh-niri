@@ -3,4 +3,4 @@
 NIRI_DEFAULTS_PATH="$CONFIG_PATH/default/niri"
 NIRI_CONFIG_PATH="$HOME/.config/niri"
 
-cp -r $NIRI_DEFAULTS_PATH/config.kdl $NIRI_CONFIG_PATH/config.kdl
+cp $NIRI_DEFAULTS_PATH/config.kdl $NIRI_CONFIG_PATH/config.kdl
