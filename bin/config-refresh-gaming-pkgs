@@ -6,7 +6,7 @@ sudo pacman -Syu --noconfirm
 
 # Install gaming related packages
 sudo pacman -S --noconfirm --needed steam linux-headers mangohud
-yay -S --noconfirm xpadneo-dkms heroic-games-launcher-bin
+yay -S --noconfirm xpadneo-dkms heroic-games-launcher-bin r2modman-bin
 
 # Prevent xpad/xpadneo driver conflict
 echo blacklist xpad | sudo tee /etc/modprobe.d/blacklist-xpad.conf >/dev/null
