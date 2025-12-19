@@ -9,6 +9,9 @@ sudo cp -r $CONFIG_DEFAULT/polkit/* /etc/polkit-1/rules.d/
 # Setup bluetooth
 sudo systemctl enable bluetooth.service
 
+# Setup power-profiles-daemon
+sudo systemctl enable power-profiles-daemon.service
+
 # Setup xdg-terminal-exec config
 sudo mkdir -p $HOME/.config/
 sudo cp $CONFIG_DEFAULT/xdg-terminal-exec/xdg-terminals.list $HOME/.config/xdg-terminals.list

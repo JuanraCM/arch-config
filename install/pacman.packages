@@ -26,6 +26,7 @@ openssh
 pavucontrol
 pipewire
 plymouth
+power-profiles-daemon
 qemu-desktop
 ripgrep
 ruby
