@@ -1,4 +1,3 @@
-wev
 alsa-tools
 alsa-utils
 binutils
@@ -18,6 +17,7 @@ libva-mesa-driver
 libva-utils
 lua51
 luarocks
+man-db
 mesa
 mise
 ntfs-3g
@@ -39,5 +39,6 @@ ttf-jetbrains-mono-nerd
 vlc
 vlc-plugins-all
 vulkan-radeon
+wev
 zoxide
 zsh
