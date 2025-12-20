@@ -2,7 +2,7 @@
 
 A scripted configuration tool for setting up an Arch Linux environment.
 
-Heavily inspired by [Omarchy](https://omarchy.app/).
+Heavily inspired by [Omarchy](https://github.com/basecamp/omarchy).
 
 ## Features and Applications
 
