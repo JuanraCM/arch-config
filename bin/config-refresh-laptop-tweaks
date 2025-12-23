@@ -1,0 +1,17 @@
+#!/bin/bash
+
+ # Install TLP and enable it if not already installed
+if ! command -v tlp &> /dev/null
+then
+    echo "TLP not found, installing..."
+    sudo pacman -S tlp --noconfirm
+    sudo systemctl enable tlp
+    sudo systemctl start tlp
+fi
+
+# Configure PipeWire sink for LFE
+PIPEWIRE_DEFAULTS_PATH="$CONFIG_PATH/default/pipewire"
+PIPEWIRE_CONFIG_PATH="$HOME/.config/pipewire/pipewire.conf.d/"
+
+sudo mkdir -p $PIPEWIRE_CONFIG_PATH
+sudo cp $PIPEWIRE_DEFAULTS_PATH/lfe-sink.conf $PIPEWIRE_CONFIG_PATH/lfe-sink.conf
