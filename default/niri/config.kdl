@@ -59,6 +59,11 @@ window-rule {
   clip-to-geometry true
 }
 
+window-rule {
+  match app-id="qemu"
+  open-maximized true
+}
+
 // Key bindings configuration.
 // https://yalter.github.io/niri/Configuration:-Key-Bindings
 binds {
